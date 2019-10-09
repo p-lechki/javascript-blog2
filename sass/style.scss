@@ -56,6 +56,17 @@ body {
 
 .sidebar {
   flex: 1 0 0;
+
+  .tags {
+    li {
+      display: inline;
+
+      a {
+        text-decoration: none;
+        color: #111;
+      }
+    }
+  }
 }
 
 .posts {
@@ -91,6 +102,8 @@ body {
   .active {
     font-weight: bold;
   }
+
+
 }
 
 .list-horizontal {
@@ -127,4 +140,28 @@ body {
   p {
     margin: 0 10px 0 0;
   }
+}
+
+.tag-size-1 {
+  font-size: 12px;
+}
+
+.tag-size-2 {
+  font-size: 14px;
+}
+
+.tag-size-3 {
+  font-size: 16px;
+}
+
+.tag-size-4 {
+  font-size: 18px;
+}
+
+.tag-size-5 {
+  font-size: 20px;
+}
+
+.tag-size-6 {
+  font-size: 22px;
 }
