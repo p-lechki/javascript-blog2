@@ -4,10 +4,11 @@ const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author';
+  optArticleAuthorSelector = '.post-author',
+  optTagsListSelector = '.tags.list';
 
-function generateTitleLinks() {
-  const titleList = document.querySelector(optTitleListSelector);
+function generateTitleLinks(customSelector = '') {
+  const titleList = document.querySelector(optTitleListSelector + customSelector);
 
   /* remove contents of titleList */
   titleList.innerHTML = '';
@@ -64,9 +65,9 @@ for (let link of links) {
   link.addEventListener('click', titleClickHandler);
 }
 
-function generateTags(customSelector = '') {
+function generateTags() {
   /* find all articles */
-  const articles = document.querySelectorAll(optArticleSelector + customSelector);
+  const articles = document.querySelectorAll(optArticleSelector);
   /* START LOOP: for every article: */
   for (let article of articles) {
     /* find tags wrapper */
