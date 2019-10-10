@@ -1,28 +1,45 @@
 'use strict';
 
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list',
-  optCloudClassCount = 5,
-  optCloudClassPrefix = 'tag-size-',
-  optAuthorsListSelector = '.authors.list';
+const opts = {
+  tagSizes: {
+    count: 5,
+    classPrefix: 'tag-size',
+  },
+};
+
+const select = {
+  all: {
+    articles: '.post',
+    linkTo: {
+      tags: 'a[href^="tag-"]',
+      authors: 'a[href^="#author-"]',
+    },
+  },
+  article: {
+    tags: '.post-tags .list',
+    author: '.post-author',
+  },
+  listOf: {
+    title: '.post-title',
+    titles: '.titles',
+    tags: '.tags.list',
+    authors: '.authors.list',
+  },
+};
 
 function generateTitleLinks(customSelector = '') {
-  const titleList = document.querySelector(optTitleListSelector);
+  const titleList = document.querySelector(select.listOf.titles);
 
   /* remove contents of titleList */
   titleList.innerHTML = '';
   /* for each article */
-  const articles = document.querySelectorAll(optArticleSelector + customSelector);
+  const articles = document.querySelectorAll(select.all.articles + customSelector);
   let html = '';
   for (let article of articles) {
     /* get the article id */
     const articleId = article.getAttribute('id');
     /* find the title element */
-    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+    const articleTitle = article.querySelector(select.listOf.title).innerHTML;
     /* get the title from the title element */
 
     /* create HTML of the link */
@@ -82,7 +99,7 @@ function calculateTagsParams(tags) {
 }
 
 function calculateTagsClass(count, params) {
-  const classNumer = Math.floor(((count - params.min) / (params.max - params.min)) * optCloudClassCount + 1);
+  const classNumer = Math.floor(((count - params.min) / (params.max - params.min)) * opts.tagSizes.count + 1);
   return classNumer;
 }
 
@@ -91,11 +108,11 @@ function generateTags() {
   let allTags = {};
 
   /* find all articles */
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(select.all.articles);
   /* START LOOP: for every article: */
   for (let article of articles) {
     /* find tags wrapper */
-    const tagsList = article.querySelector(optArticleTagsSelector);
+    const tagsList = article.querySelector(select.article.tags);
     /* make html variable with empty string */
     let html = '';
     /* get tags from data-tags attribute */
@@ -124,7 +141,7 @@ function generateTags() {
   /* END LOOP: for every article: */
 
   /* [NEW] find list of tags in right column */
-  const tagList = document.querySelector(optTagsListSelector);
+  const tagList = document.querySelector(select.listOf.tags);
 
   const tagsParams = calculateTagsParams(allTags);
   console.log('tagsParams:', tagsParams);
@@ -134,7 +151,7 @@ function generateTags() {
   // [NEW] START LOOP: for each tag in allTags
   for (let tag in allTags) {
     // [NEW] gemerate cod of a link and add it to allTagsHTML
-    const tagLinkHTML = '<li><a href="#tag-' + tag + '"class="tag-size-' + calculateTagsClass(allTags[tag], tagsParams) + '">' + tag + ' </a></li>';
+    const tagLinkHTML = '<li><a href="#tag-' + tag + '"class="' + opts.tagSizes.classPrefix + calculateTagsClass(allTags[tag], tagsParams) + '">' + tag + ' </a></li>';
     allTagsHTML += tagLinkHTML;
   }
   // [NEW] END LOOP: for each tag in allTags
@@ -195,11 +212,11 @@ function generateAuthors() {
   let allAuthors = {};
 
   /* find all articles */
-  const articles = document.querySelectorAll(optArticleSelector);
+  const articles = document.querySelectorAll(select.all.articles);
   /* START LOOP: for every article: */
   for (let article of articles) {
     /* find author wrapper */
-    const articleAuthor = article.querySelector(optArticleAuthorSelector);
+    const articleAuthor = article.querySelector(select.article.author);
     /* make html variable with empty string */
     let html = '';
     /* get author from data-author attribute */
@@ -219,7 +236,7 @@ function generateAuthors() {
   /* END LOOP: for every article: */
 
   // [NEW] find list of authors in right column
-  const authorsList = document.querySelector(optAuthorsListSelector);
+  const authorsList = document.querySelector(select.listOf.authors);
 
   // [NEW] create variable for all links HTML code
   let allAuthorsHTML = '';
